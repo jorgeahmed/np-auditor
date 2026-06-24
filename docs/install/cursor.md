@@ -51,3 +51,13 @@ cd ~/Projects/home-hub
 | `np_audit_input` | Antes de prompt caro |
 | `np_verify_response` | Tras respuesta con claims |
 | `np_agent_risks` | Pagos / prod |
+
+## 7. Actualizaciones
+
+Instala con `git clone` (no copia manual). Tras cada publicación en GitHub:
+
+```bash
+~/Projects/np-auditor/scripts/update.sh
+```
+
+Detalle: [docs/actualizaciones.md](../actualizaciones.md)
