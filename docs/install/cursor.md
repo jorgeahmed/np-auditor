@@ -6,7 +6,20 @@ El operador debe tener home-hub con motor en:
 
 `storage/pnp/local/p-np/`
 
-## 2. Instalar MCP
+## 2. Modelo de uso (importante)
+
+**Por defecto MCP apagado en chat** — evita loops de optimización.
+
+```bash
+./scripts/np-auditor-session-check.sh          # al iniciar sesión
+./scripts/np-auditor-audit.sh -f prompt.md --suggest   # auditar en terminal
+./scripts/np-auditor-off.sh                    # MCP off (recomendado)
+./scripts/np-auditor-on.sh                     # MCP on solo si lo pides
+```
+
+Doc: `docs/np-auditor-modelo-uso.md` (en home-hub)
+
+## 3. Instalar MCP (opcional)
 
 ```bash
 cd ~/Projects/home-hub/projects/p-np/np-auditor/mcp-server
@@ -51,8 +64,21 @@ cd ~/Projects/home-hub
 | `np_audit_input` | Antes de prompt caro |
 | `np_verify_response` | Tras respuesta con claims |
 | `np_agent_risks` | Pagos / prod |
+| `np_suggest_prompt` | Prompt mejorado **solo copiar** (no ejecuta) |
 
-## 7. Actualizaciones
+## 7. Prompt sugerido sin agente
+
+Terminal:
+
+```bash
+./scripts/np-auditor-suggest.sh --copy-only <<'EOF'
+tu prompt aquí...
+EOF
+```
+
+MCP: tool `np_suggest_prompt` — copia el bloque al Composer manualmente.
+
+## 8. Actualizaciones
 
 Instala con `git clone` (no copia manual). Tras cada publicación en GitHub:
 

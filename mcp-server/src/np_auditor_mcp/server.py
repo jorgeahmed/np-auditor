@@ -111,6 +111,34 @@ def np_agent_risks(prompt: str, domain: str = "general") -> str:
     return "\n".join(lines)
 
 
+@mcp.tool()
+def np_suggest_prompt(prompt: str) -> str:
+    """Genera un prompt mejorado listo para COPIAR al Composer.
+
+    NO ejecuta el agente. Devuelve el texto sugerido para que el usuario
+    lo pegue manualmente cuando quiera.
+    """
+    data = _run_bridge(["suggest", prompt])
+    if data.get("error"):
+        raise RuntimeError(data["error"])
+    suggested = data.get("prompt_sugerido", "")
+    cambios = data.get("cambios") or []
+    antes = data.get("estructura_antes", 0)
+    despues = data.get("estructura_despues", 0)
+    lines = [
+        "── COPIAR AL COMPOSER (no ejecutar automáticamente) ──",
+        "",
+        suggested,
+        "",
+        "── FIN PROMPT SUGERIDO ──",
+        f"Cambios: {', '.join(cambios) if cambios else 'ninguno'}",
+        f"Estructura: {antes:.0%} → {despues:.0%}",
+        "",
+        "Pega el bloque anterior en un chat nuevo cuando quieras ejecutar.",
+    ]
+    return "\n".join(lines)
+
+
 def main() -> None:
     mcp.run()
 
