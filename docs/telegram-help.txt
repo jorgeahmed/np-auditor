@@ -1,0 +1,14 @@
+Jarvis / Telegram — comandos NP Brain
+
+/help                  Lista completa
+/cerebro [cmd]         Estado NP Brain
+/rotacion              Rama producto A→B→C
+/foco <rama> meta=N    Foco hasta meta · /foco off
+/reporte               Informe entrenamiento 30m
+/semillas              Semillas xfer
+/entrenar <dom>        Tick manual
+/papers                Prompt Lab
+/promptlab <texto>     Auditar prompt
+/sast                  Firmas SAST
+
+Actualizado: 2026-06-24 00:53 UTC

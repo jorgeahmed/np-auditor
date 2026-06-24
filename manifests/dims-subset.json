@@ -1,0 +1,68 @@
+{
+  "version": 352,
+  "schema": 1,
+  "generado_utc": "2026-06-24T00:53:43Z",
+  "nota": "Subset público verificable — sin código de sensores (R1)",
+  "producto": "np-auditor",
+  "organismo_dims": 352,
+  "dominios": {
+    "programacion": {
+      "agent_risk": [
+        {
+          "id": "agent_human_gate_v1",
+          "descripcion": "sin aprobación humana"
+        },
+        {
+          "id": "agent_idempotency_v1",
+          "descripcion": "doble débito / replay"
+        },
+        {
+          "id": "agent_pay_cap_v1",
+          "descripcion": "pago > techo configurado"
+        },
+        {
+          "id": "agent_pay_injection_v1",
+          "descripcion": "prompt injection en wallet"
+        },
+        {
+          "id": "agent_payee_whitelist_v1",
+          "descripcion": "beneficiario no autorizado"
+        },
+        {
+          "id": "agent_velocity_v1",
+          "descripcion": "micro-pagos acumulados"
+        }
+      ]
+    },
+    "psicologia": {
+      "psych1_decision": [
+        {
+          "id": "psych1_anchoring_v1",
+          "descripcion": "anclaje numérico"
+        },
+        {
+          "id": "psych1_loss_aversion_v1",
+          "descripcion": "aversión a la pérdida"
+        }
+      ]
+    }
+  },
+  "fixtures_prompt_lab": [
+    "agent_pay_no_cap",
+    "agent_pay_injection",
+    "skill_value_prop",
+    "np_verify_nernst",
+    "skill_review_security",
+    "skill_create_hook",
+    "np_verify_pl_demo",
+    "skill_canvas",
+    "skill_review_bugbot",
+    "skill_split_prs"
+  ],
+  "plataformas": [
+    "cursor",
+    "claude",
+    "antigravity",
+    "openai"
+  ]
+}

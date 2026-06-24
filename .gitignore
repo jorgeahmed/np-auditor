@@ -1,0 +1,23 @@
+# NP Auditor — repo público
+
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+
+.DS_Store
+*.log
+
+# Beta local — paths del operador (no commitear)
+.env
+.env.local
+
+# Motor privado — nunca debe estar aquí
+storage/
+src/sensores/
+banco_*.json
+cerebro/

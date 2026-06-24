@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "np-auditor": {
+      "command": "np-auditor-mcp",
+      "env": {
+        "HOME_HUB_ROOT": "/path/to/home-hub",
+        "NP_BRAIN_HOME": "/path/to/home-hub/storage/pnp/local/p-np"
+      }
+    }
+  }
+}

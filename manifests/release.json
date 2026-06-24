@@ -1,0 +1,13 @@
+{
+  "version": "0.1.352",
+  "published_utc": "2026-06-24T00:53:43Z",
+  "organismo_dims": 352,
+  "agent_risk_dims": 6,
+  "platforms": [
+    "cursor",
+    "claude",
+    "antigravity",
+    "openai"
+  ],
+  "fixtures": 10
+}
