@@ -83,10 +83,11 @@ Actualizaciones automáticas: [docs/publicacion-diaria.md](docs/publicacion-diar
 
 | Doc | Contenido |
 |-----|-----------|
-| [docs/INDEX.md](docs/INDEX.md) | Índice completo |
-| [docs/producto.md](docs/producto.md) | Producto, rotación, Telegram |
-| [docs/mvp-plan.md](docs/mvp-plan.md) | Plan técnico MVP |
+| [docs/INDEX.md](docs/INDEX.md) | Índice |
+| [docs/producto.md](docs/producto.md) | Qué es (usuario) |
 | [docs/beta.md](docs/beta.md) | Programa beta |
+
+Arquitectura interna del motor **no** se publica en este repositorio.
 
 ## Licencia
 

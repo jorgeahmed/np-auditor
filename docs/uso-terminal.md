@@ -4,6 +4,21 @@ Guía operativa para **home-hub**. El MCP en Cursor va **apagado por defecto** p
 
 ---
 
+## Comando slash (recomendado — como `/btw` en Claude)
+
+En Cursor escribe **`/`** y elige:
+
+| Comando | Qué hace |
+|---------|----------|
+| **`/np`** | Audita el prompt que pegues — **una pasada**, no ejecuta |
+| **`/btw`** | Alias mismo flujo |
+
+Archivos: `.cursor/commands/np.md` y `btw.md`
+
+**Ventaja:** no necesitas tener el MCP encendido todo el día; cuando dudas, `/np` + prompt y listo.
+
+MCP off por defecto en Settings sigue siendo OK; el comando le dice al agente cuándo auditar.
+
 ## Apagar NP Auditor en Cursor (3 formas)
 
 ### 1. Botón en Cursor (la que usaste) — recomendado

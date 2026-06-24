@@ -15,10 +15,10 @@ mcp = FastMCP("np-auditor")
 def _bridge() -> Path:
     root = os.environ.get("HOME_HUB_ROOT", "")
     if not root:
-        raise RuntimeError("HOME_HUB_ROOT no configurado")
+        raise RuntimeError("NP Auditor backend no configurado (HOME_HUB_ROOT)")
     script = Path(root) / "scripts" / "np-auditor-bridge.sh"
     if not script.is_file():
-        raise RuntimeError(f"Bridge no encontrado: {script}")
+        raise RuntimeError("NP Auditor backend no disponible en esta instalación")
     return script
 
 
@@ -34,11 +34,11 @@ def _run_bridge(args: list[str]) -> dict:
         cwd=os.environ.get("HOME_HUB_ROOT", "."),
     )
     if proc.returncode != 0 and not proc.stdout.strip():
-        raise RuntimeError(proc.stderr or f"bridge exit {proc.returncode}")
+        raise RuntimeError(proc.stderr or "NP Auditor backend error") from None
     try:
         return json.loads(proc.stdout)
     except json.JSONDecodeError as e:
-        raise RuntimeError(f"JSON inválido del bridge: {proc.stdout[:200]}") from e
+        raise RuntimeError("Respuesta del backend inválida") from e
 
 
 @mcp.tool()
