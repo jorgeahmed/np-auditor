@@ -1,10 +1,64 @@
 {
-  "version": 352,
+  "version": 502,
   "schema": 1,
-  "generado_utc": "2026-06-24T00:53:43Z",
+  "generado_utc": "2026-06-25T19:53:41Z",
   "nota": "Subset público verificable — sin código de sensores (R1)",
   "producto": "np-auditor",
-  "organismo_dims": 352,
+  "organismo_dims": 502,
+  "dominios_resumen": {
+    "matematicas": {
+      "dims": 52,
+      "categoria": "Cálculo, álgebra, series"
+    },
+    "lenguaje": {
+      "dims": 46,
+      "categoria": "Corpus y embeddings"
+    },
+    "computacion": {
+      "dims": 62,
+      "categoria": "CS, systems, ML"
+    },
+    "comunicacion": {
+      "dims": 17,
+      "categoria": "Redes, canal y compresión"
+    },
+    "transferencia": {
+      "dims": 46,
+      "categoria": "Puentes entre dominios"
+    },
+    "economia": {
+      "dims": 17,
+      "categoria": "Micro, macro y econometría"
+    },
+    "estadistica": {
+      "dims": 26,
+      "categoria": "Inferencia y modelos"
+    },
+    "fisica": {
+      "dims": 22,
+      "categoria": "Mecánica y termodinámica"
+    },
+    "quimica": {
+      "dims": 22,
+      "categoria": "Reacciones y orgánica"
+    },
+    "biologia": {
+      "dims": 22,
+      "categoria": "Molecular y evolutiva"
+    },
+    "neurociencia": {
+      "dims": 35,
+      "categoria": "Sinapsis y sistemas"
+    },
+    "psicologia": {
+      "dims": 31,
+      "categoria": "Decisión y sesgos"
+    },
+    "programacion": {
+      "dims": 104,
+      "categoria": "PL, agent-risk, ops"
+    }
+  },
   "dominios": {
     "programacion": {
       "agent_risk": [

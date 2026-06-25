@@ -21,7 +21,8 @@ Auditar en terminal:
 
 ## MCP tools (cuando ON)
 
-- `np_audit_input` — una pasada
+- `np_audit_input` — estructura + cobertura + organismo
+- `np_coverage` — mapa KNOWN/PARTIAL/UNKNOWN
 - `np_agent_risks` — pagos/prod  
 - `np_suggest_prompt` — copiar, no ejecutar
 - `np_verify_response` — post-respuesta

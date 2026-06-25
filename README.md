@@ -10,9 +10,9 @@ Antes de que tu agente entre en un loop caro o ejecute algo riesgoso, NP Auditor
 
 ## Estado
 
-**Beta cerrada · MVP 0.1 · local first**
+**Beta cerrada · organismo 502 dims · local o API remota**
 
-Requiere motor NP Brain en local (`NP_BRAIN_HOME`) durante la beta. Cloud API en v0.2.
+Requiere motor NP Brain en local (`NP_BRAIN_HOME`) **o** API beta con key — ver [api-beta.md](docs/api-beta.md).
 
 ## Instalación rápida
 
@@ -60,9 +60,15 @@ Copia `skill/np-auditor/` a `.cursor/skills/np-auditor/` en tu proyecto.
 
 | Tool | Descripción |
 |------|-------------|
-| `np_audit_input` | Audita prompt antes de enviarlo al agente |
+| `np_audit_input` | Audita prompt (estructura, cobertura, organismo) |
+| `np_coverage` | Mapa KNOWN/PARTIAL/UNKNOWN por dominio |
 | `np_verify_response` | Verifica claims / alucinación |
 | `np_agent_risks` | Riesgos payment / prod / general |
+| `np_suggest_prompt` | Prompt mejorado para copiar |
+
+## Beta remota (API)
+
+Sin motor local: [docs/api-beta.md](docs/api-beta.md) — `NP_AUDITOR_API_URL` + API key.
 
 ## Manifest
 
