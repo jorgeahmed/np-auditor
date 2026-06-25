@@ -1,38 +1,70 @@
 # NP Auditor — qué es (para usuarios)
 
-NP Auditor revisa **prompts** y **respuestas** de agentes de IA **antes** de que gastes tokens o ejecutes algo riesgoso.
+NP Auditor revisa **prompts** y **respuestas** de agentes de IA en **dos momentos**:
 
-No es otro chatbot. Es un **examinador**: estructura del input, riesgos visibles, claims medibles en la salida.
+1. **Antes** — ¿tu instrucción está clara y es segura?
+2. **Después** — ¿lo que la IA respondió choca con lo que el sistema puede medir?
+
+No es otro chatbot. Es un **examinador**: estructura del input, riesgos visibles, y verificación de afirmaciones medibles en la salida.
+
+---
+
+## Flujo de uso (recomendado)
+
+```
+ANTES                          DESPUÉS
+──────                         ───────
+Prompt importante              IA ya respondió
+      ↓                              ↓
+np_audit_input (1×)            np_verify_response (1×)
+      ↓                              ↓
+Ajustas y ejecutas             Decides si confías
+```
+
+**Regla:** una pasada por fase. No loops audit → suggest → audit ni verify repetido.
 
 ---
 
 ## Qué hace (5 tools)
 
-| Tool | Para qué |
-|------|----------|
-| `np_audit_input` | Estructura, cobertura, organismo (~502 dims), riesgo loop |
-| `np_coverage` | Mapa dominios/topics KNOWN · PARTIAL · UNKNOWN |
-| `np_verify_response` | Claims verificables vs alucinación |
-| `np_agent_risks` | Checklist pagos / prod / general |
-| `np_suggest_prompt` | Versión mejorada para **copiar** |
+| Tool | Cuándo | En criollo |
+|------|--------|------------|
+| `np_audit_input` | **Antes** del prompt | ¿Está claro? ¿Riesgo de dar vueltas? |
+| `np_coverage` | **Antes** (opcional) | ¿Qué temas cubre tu prompt? |
+| `np_agent_risks` | **Antes** (pagos/prod) | Checklist de riesgos visibles |
+| `np_suggest_prompt` | **Antes** (opcional) | Versión mejorada para **copiar** |
+| `np_verify_response` | **Después** de la respuesta | ¿Contradicciones / alucinación medible? |
 
-En Cursor: **`/np`** + pegas tu prompt (ver [uso-terminal.md](uso-terminal.md)).
+---
+
+## Verify (después de respuestas) — qué esperar
+
+`np_verify_response` contrasta afirmaciones de la IA con el organismo (~502 dims entrenadas).
+
+| Resultado | Significado |
+|-----------|-------------|
+| **Verificados** | Cuadran con lo medido |
+| **Contradichos** | Chocan con lo medido — revisar con cuidado |
+| **Alucinación (medible)** | % de error solo sobre claims comprobables |
+| **Sin claims medibles** | Opiniones o temas fuera de alcance — no es veredicto |
+
+No fact-checka internet ni garantiza cero errores en todo el texto.
 
 ---
 
 ## Cómo se conecta (beta)
 
-El cliente MCP en este repo se conecta a un **servicio de análisis** configurado por el operador:
-
 - **Local:** `HOME_HUB_ROOT` + `NP_BRAIN_HOME`
-- **Remoto (beta):** `NP_AUDITOR_API_URL` + `NP_AUDITOR_API_KEY` — ver [api-beta.md](api-beta.md)
+- **Remoto (beta):** `NP_AUDITOR_API_URL` + `NP_AUDITOR_API_KEY` — [api-beta.md](api-beta.md)
+
+Onboarding testers: [beta-onboarding-tester.md](beta-onboarding-tester.md)
 
 ---
 
 ## Qué NO prometemos
 
-- No “optimizamos con otro LLM” en el audit de input (latencia ~1 s).
-- No garantizamos cero errores del agente — señalamos riesgos **medibles** en lo que podemos verificar.
+- No “optimizamos con otro LLM” en el audit (~1 s, $0 LLM en el path local).
+- No garantizamos cero alucinaciones — señalamos contradicciones **medibles**.
 - No publicamos el motor de verificación en este repositorio.
 
 ---
@@ -40,8 +72,5 @@ El cliente MCP en este repo se conecta a un **servicio de análisis** configurad
 ## Más info
 
 - Instalación: [docs/install/README.md](install/README.md)
-- Uso terminal + apagar MCP: [uso-terminal.md](uso-terminal.md)
 - Beta: [beta.md](beta.md)
-- Actualizaciones del manifest: [actualizaciones.md](actualizaciones.md)
-
-Documentación operativa interna del proveedor **no** forma parte de este repo.
+- Actualizaciones: [actualizaciones.md](actualizaciones.md)

@@ -31,7 +31,7 @@ git pull "${REMOTE}" "${BRANCH}"
 NEW="$(read_version)"
 
 if [[ -d mcp-server ]]; then
-  pip install -e mcp-server/ -q 2>/dev/null || pip install -e mcp-server/
+  "${ROOT}/scripts/install-mcp.sh"
 fi
 
 echo "NP Auditor actualizado: ${OLD} → ${NEW}"

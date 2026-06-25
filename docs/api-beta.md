@@ -53,13 +53,20 @@ X-NP-Auditor-Key: <NP_AUDITOR_API_KEY>
 
 ## MCP con API remota (tester)
 
+El tester **sí** instala el cliente MCP en su máquina (stdio local → HTTP remoto):
+
+```bash
+git clone https://github.com/jorgeahmed/np-auditor.git ~/Projects/np-auditor
+~/Projects/np-auditor/scripts/install-mcp.sh
+```
+
 En `~/.cursor/mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "np-auditor": {
-      "command": "np-auditor-mcp",
+      "command": "/Users/TU/Projects/np-auditor/mcp-server/.venv/bin/np-auditor-mcp",
       "env": {
         "NP_AUDITOR_API_URL": "https://tu-tunel.trycloudflare.com",
         "NP_AUDITOR_API_KEY": "beta-key-1"

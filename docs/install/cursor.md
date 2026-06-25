@@ -6,6 +6,8 @@ El operador debe tener home-hub con motor en:
 
 `storage/pnp/local/p-np/`
 
+Testers **sin motor** usan API remota: [api-beta.md](../api-beta.md).
+
 ## 2. Modelo de uso (importante)
 
 **Por defecto MCP apagado en chat** — evita loops de optimización.
@@ -21,12 +23,14 @@ Doc: `docs/np-auditor-modelo-uso.md` (en home-hub)
 
 ## 3. Instalar MCP (opcional)
 
+Requisito: [uv](https://docs.astral.sh/uv/). No uses `pip` del sistema en macOS.
+
 ```bash
-cd ~/Projects/home-hub/projects/p-np/np-auditor/mcp-server
-pip install -e .
+git clone https://github.com/jorgeahmed/np-auditor.git ~/Projects/np-auditor
+~/Projects/np-auditor/scripts/install-mcp.sh
 ```
 
-## 3. Cursor MCP
+## 4. Cursor MCP
 
 `~/.cursor/mcp.json` o `.cursor/mcp.json` del proyecto:
 
@@ -34,7 +38,7 @@ pip install -e .
 {
   "mcpServers": {
     "np-auditor": {
-      "command": "np-auditor-mcp",
+      "command": "/Users/TU/Projects/np-auditor/mcp-server/.venv/bin/np-auditor-mcp",
       "env": {
         "HOME_HUB_ROOT": "/Users/TU/Projects/home-hub",
         "NP_BRAIN_HOME": "/Users/TU/Projects/home-hub/storage/pnp/local/p-np"
@@ -46,27 +50,28 @@ pip install -e .
 
 Plantilla: [`config/examples/cursor-mcp.json`](../../config/examples/cursor-mcp.json)
 
-## 4. Skill
+## 5. Skill
 
 Copia `skill/np-auditor/` → `.cursor/skills/np-auditor/` (proyecto o global).
 
-## 5. Smoke test
+## 6. Smoke test
 
 ```bash
 cd ~/Projects/home-hub
 ./scripts/np-auditor-smoke.sh
 ```
 
-## 6. Tools
+## 7. Tools
 
-| Tool | Cuándo |
-|------|--------|
-| `np_audit_input` | Antes de prompt caro |
-| `np_verify_response` | Tras respuesta con claims |
-| `np_agent_risks` | Pagos / prod |
-| `np_suggest_prompt` | Prompt mejorado **solo copiar** (no ejecuta) |
+| Fase | Tool | Cuándo |
+|------|------|--------|
+| **Antes** | `np_audit_input` | Antes de prompt caro |
+| **Antes** | `np_coverage` | Mapa dominios KNOWN/PARTIAL/UNKNOWN |
+| **Antes** | `np_agent_risks` | Pagos / prod |
+| **Antes** | `np_suggest_prompt` | Prompt mejorado **solo copiar** |
+| **Después** | `np_verify_response` | Tras respuesta con afirmaciones técnicas |
 
-## 7. Prompt sugerido sin agente
+## 8. Prompt sugerido sin agente
 
 Terminal:
 
@@ -78,7 +83,7 @@ EOF
 
 MCP: tool `np_suggest_prompt` — copia el bloque al Composer manualmente.
 
-## 8. Actualizaciones
+## 9. Actualizaciones
 
 Instala con `git clone` (no copia manual). Tras cada publicación en GitHub:
 

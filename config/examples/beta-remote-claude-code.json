@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "np-auditor": {
+      "command": "{{INSTALL_ROOT}}/mcp-server/.venv/bin/np-auditor-mcp",
+      "env": {
+        "NP_AUDITOR_API_URL": "{{NP_AUDITOR_API_URL}}",
+        "NP_AUDITOR_API_KEY": "{{NP_AUDITOR_API_KEY}}"
+      }
+    }
+  }
+}

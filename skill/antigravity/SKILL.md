@@ -1,27 +1,44 @@
 # NP Auditor — Antigravity / Gemini CLI skill
-# Copiar a: ~/.gemini/skills/np-auditor/SKILL.md
 
 ---
 name: np-auditor
-description: Audita prompts y respuestas de agentes antes de quemar tokens o ejecutar pagos/prod.
+description: >-
+  Audita prompts ANTES y verifica respuestas DESPUÉS vía MCP. Invocar cuando el
+  usuario pide auditar/verificar o hay contexto pagos/prod/deploy.
+  NO loops automáticos.
 ---
 
-# NP Auditor
+# NP Auditor (Antigravity)
 
-Usa las tools MCP `np_auditor` cuando:
+Instalación: `docs/install/AGENT-beta-remote.md` (beta) o `AGENT-operator-local.md`
 
-- El usuario envía un prompt largo o costoso
-- Hay contexto de pagos, wallet, prod, deploy
-- Debes verificar claims tras una respuesta del agente
+## Dos fases
+
+1. **ANTES** — `np_audit_input` (prompt importante)
+2. **DESPUÉS** — `np_verify_response` (respuesta con afirmaciones)
+
+## Tools
+
+- `np_audit_input` — antes de ejecutar
+- `np_coverage` — mapa KNOWN/PARTIAL/UNKNOWN
+- `np_agent_risks` — payment / prod
+- `np_suggest_prompt` — copiar al usuario, no ejecutar
+- `np_verify_response` — **después** de la respuesta del agente
 
 ## Flujo
 
-1. `np_audit_input` — antes de ejecutar
-2. `np_verify_response` — tras respuesta con afirmaciones
-3. `np_agent_risks` — domain=payment o prod
+```
+Prompt → audit (1×) → usuario ajusta → agente trabaja → verify (1×) si hay claims
+```
+
+## Verify — qué decir al usuario
+
+- Verificados / contradichos / alucinación medible
+- Si nada medible: explicar que no es veredicto, solo fuera de alcance
+- Una pasada; no re-verificar en bucle
 
 ## Reglas
 
-- No inventar scores; usar output del MCP
-- Si riesgo_loop=high → pedir objetivo y criterio medible
-- R1: el MCP no crea dimensiones; solo audita
+- No inventar scores
+- Beta remota: `NP_AUDITOR_API_URL` + key
+- Una pasada por fase

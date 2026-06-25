@@ -1,0 +1,151 @@
+{
+  "$schema": "np-auditor-install/v1",
+  "version": "0.2.0-beta",
+  "description": "Manifiesto machine-readable para que un agente (Claude, Antigravity, Cursor) instale NP Auditor sin motor local.",
+  "audience": "beta_tester_remote",
+  "repo": "https://github.com/jorgeahmed/np-auditor",
+  "required_user_inputs": [
+    {
+      "key": "NP_AUDITOR_API_URL",
+      "description": "URL HTTPS del operador (Cloudflare tunnel)",
+      "example": "https://example.trycloudflare.com"
+    },
+    {
+      "key": "NP_AUDITOR_API_KEY",
+      "description": "API key asignada por el operador",
+      "example": "beta-user-001",
+      "secret": true
+    },
+    {
+      "key": "INSTALL_ROOT",
+      "description": "Ruta absoluta donde clonar el repo",
+      "default_darwin": "~/Projects/np-auditor",
+      "default_linux": "~/Projects/np-auditor"
+    }
+  ],
+  "forbidden_for_beta_tester": [
+    "HOME_HUB_ROOT",
+    "NP_BRAIN_HOME",
+    "pip install (system)",
+    "pip3 install (system)"
+  ],
+  "prerequisites": [
+    {
+      "name": "uv",
+      "install_darwin_linux": "curl -LsSf https://astral.sh/uv/install.sh | sh",
+      "verify": "uv --version"
+    },
+    {
+      "name": "git",
+      "verify": "git --version"
+    }
+  ],
+  "install_steps": [
+    {
+      "id": 1,
+      "action": "clone",
+      "command": "git clone https://github.com/jorgeahmed/np-auditor.git {{INSTALL_ROOT}}"
+    },
+    {
+      "id": 2,
+      "action": "run_script",
+      "command": "{{INSTALL_ROOT}}/scripts/install-mcp.sh",
+      "note": "Crea mcp-server/.venv/ e imprime ruta del binario"
+    },
+    {
+      "id": 3,
+      "action": "verify_import",
+      "command": "{{INSTALL_ROOT}}/mcp-server/.venv/bin/python -c \"import np_auditor_mcp; print('ok')\"",
+      "expect_stdout_contains": "ok"
+    },
+    {
+      "id": 4,
+      "action": "write_mcp_config",
+      "platform": "see config_templates below"
+    },
+    {
+      "id": 5,
+      "action": "copy_skill",
+      "platform": "see skill_paths below"
+    },
+    {
+      "id": 6,
+      "action": "reload_ide",
+      "note": "Reiniciar Claude Desktop / Reload Window en Cursor / verificar MCP en Antigravity"
+    },
+    {
+      "id": 7,
+      "action": "verify_api",
+      "command": "curl -fsS {{NP_AUDITOR_API_URL}}/health",
+      "expect_json": { "ok": true }
+    }
+  ],
+  "config_templates": {
+    "cursor": {
+      "file": "~/.cursor/mcp.json",
+      "merge_strategy": "merge mcpServers.np-auditor",
+      "template_file": "config/examples/beta-remote-cursor.json"
+    },
+    "claude_desktop": {
+      "file": "~/Library/Application Support/Claude/claude_desktop_config.json",
+      "merge_strategy": "merge mcpServers.np-auditor",
+      "template_file": "config/examples/beta-remote-claude-desktop.json"
+    },
+    "claude_code": {
+      "file": "~/.claude/settings.json",
+      "merge_strategy": "merge mcpServers.np-auditor",
+      "template_file": "config/examples/beta-remote-claude-code.json"
+    },
+    "antigravity": {
+      "file": "~/.gemini/config/mcp_config.json",
+      "merge_strategy": "merge mcpServers.np-auditor",
+      "template_file": "config/examples/beta-remote-antigravity.json"
+    }
+  },
+  "skill_paths": {
+    "cursor": "~/.cursor/skills/np-auditor/SKILL.md",
+    "antigravity": "~/.gemini/skills/np-auditor/SKILL.md",
+    "source_cursor": "skill/np-auditor/SKILL.md",
+    "source_antigravity": "skill/antigravity/SKILL.md"
+  },
+  "mcp_tools": [
+    "np_audit_input",
+    "np_coverage",
+    "np_verify_response",
+    "np_agent_risks",
+    "np_suggest_prompt"
+  ],
+  "usage_rules_for_agent": [
+    "Dos fases: ANTES np_audit_input · DESPUÉS np_verify_response",
+    "Una pasada por fase; no loops audit→suggest→re-audit ni verify repetido",
+    "Verify después de respuesta con claims; resumir verificados/contradichos/alucinación medible",
+    "np_suggest_prompt: output solo para copiar; no ejecutar automáticamente",
+    "Beta tester: backend vía NP_AUDITOR_API_URL; sin HOME_HUB_ROOT",
+    "Si 401: revisar NP_AUDITOR_API_KEY",
+    "Si pip not found: usar install-mcp.sh (uv), nunca pip del sistema en macOS"
+  ],
+  "error_recovery": [
+    {
+      "symptom": "command not found: pip",
+      "fix": "Ejecutar {{INSTALL_ROOT}}/scripts/install-mcp.sh (usa uv, no pip global)"
+    },
+    {
+      "symptom": "externally-managed-environment",
+      "fix": "No instalar en Python del sistema; usar venv en mcp-server/.venv vía install-mcp.sh"
+    },
+    {
+      "symptom": "NP Auditor backend no configurado (HOME_HUB_ROOT)",
+      "fix": "Beta remota: quitar HOME_HUB_ROOT del env; usar solo NP_AUDITOR_API_URL + NP_AUDITOR_API_KEY"
+    },
+    {
+      "symptom": "401 API key",
+      "fix": "Verificar key con operador; header Authorization: Bearer <key>"
+    },
+    {
+      "symptom": "connection refused / tunnel",
+      "fix": "Operador debe tener API + cloudflared activos; probar curl {{NP_AUDITOR_API_URL}}/health"
+    }
+  ],
+  "agent_doc_markdown": "docs/install/AGENT-beta-remote.md",
+  "operator_doc_markdown": "docs/install/AGENT-operator-local.md"
+}

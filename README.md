@@ -4,45 +4,60 @@ Auditor de inputs para agentes de IA — **medible, auditable, sin caja negra**.
 
 Antes de que tu agente entre en un loop caro o ejecute algo riesgoso, NP Auditor revisa:
 
-- **Estructura del prompt** (objetivo, criterio de éxito)
-- **Confiabilidad de la respuesta** (claims verificados vs alucinados)
-- **Riesgos del agente** (pagos, prod, acciones amplias)
+- **Antes:** estructura del prompt, riesgos, cobertura
+- **Después:** afirmaciones de la respuesta vs lo medible (alucinación comprobable)
 
 ## Estado
 
 **Beta cerrada · organismo 502 dims · local o API remota**
 
-Requiere motor NP Brain en local (`NP_BRAIN_HOME`) **o** API beta con key — ver [api-beta.md](docs/api-beta.md).
+## ¿Cómo empiezo?
 
-## Instalación rápida
+| Perfil | Guía | Formato |
+|--------|------|---------|
+| **Beta tester** (pides a Claude/Antigravity/Cursor que instale) | [docs/install/PROMPT-usuario.md](docs/install/PROMPT-usuario.md) | Prompt copy-paste |
+| **Agente instalador** | [docs/install/AGENT-beta-remote.md](docs/install/AGENT-beta-remote.md) | Markdown + JSON |
+| **Manifiesto machine-readable** | [docs/install/agent-install-manifest.json](docs/install/agent-install-manifest.json) | JSON |
+| **Operador** (motor en tu Mac) | [docs/install/AGENT-operator-local.md](docs/install/AGENT-operator-local.md) | Markdown |
+
+Requiere API key del operador **o** motor local — ver [api-beta.md](docs/api-beta.md).
+
+## Instalación rápida (humano)
 
 ### 1. Requisitos
 
 - Cursor con MCP
-- Python ≥ 3.10
-- Motor NP en la Mac del operador (`NP_BRAIN_HOME`)
+- [uv](https://docs.astral.sh/uv/) (`curl -LsSf https://astral.sh/uv/install.sh | sh`)
+- Python ≥ 3.10 (uv lo gestiona en el venv)
+- Motor NP en la Mac del operador (`NP_BRAIN_HOME`) **o** API key remota
 
-### 2. Variables
+En macOS **no** uses `pip` del sistema: suele ser Python 3.9 y PEP 668 bloquea installs globales.
+
+### 2. Clonar e instalar MCP
+
+```bash
+git clone https://github.com/jorgeahmed/np-auditor.git ~/Projects/np-auditor
+~/Projects/np-auditor/scripts/install-mcp.sh
+```
+
+El script crea `mcp-server/.venv/` e imprime la ruta del binario.
+
+### 3. Variables (beta local)
 
 ```bash
 export NP_BRAIN_HOME="/path/to/home-hub/storage/pnp/local/p-np"
 export HOME_HUB_ROOT="/path/to/home-hub"
 ```
 
-### 3. Instalar MCP
-
-```bash
-cd mcp-server
-pip install -e .
-```
-
 ### 4. Cursor (`~/.cursor/mcp.json`)
+
+Usa la **ruta absoluta** al binario del venv (no está en el PATH global):
 
 ```json
 {
   "mcpServers": {
     "np-auditor": {
-      "command": "np-auditor-mcp",
+      "command": "/path/to/np-auditor/mcp-server/.venv/bin/np-auditor-mcp",
       "env": {
         "NP_BRAIN_HOME": "/path/to/storage/pnp/local/p-np",
         "HOME_HUB_ROOT": "/path/to/home-hub"
@@ -51,6 +66,8 @@ pip install -e .
   }
 }
 ```
+
+Plantilla: [`config/examples/cursor-mcp.json`](config/examples/cursor-mcp.json)
 
 ### 5. Skill Cursor
 

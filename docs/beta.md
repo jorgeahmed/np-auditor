@@ -2,15 +2,15 @@
 
 ## Perfil que buscamos
 
-- Usas **Cursor** (u otro IDE) con agentes a diario
+- Usas **Cursor**, **Claude** o **Antigravity** con agentes a diario
 - Te preocupa **quemar tokens** en prompts vagos o loops
-- Opcional: agentes con **pagos**, **prod**, o **hooks**
+- Te interesa saber si la IA **inventa** en temas que importan (verify post-respuesta)
 
 ## Compromiso (2 semanas)
 
-1. Instalar MCP + skill (te guiamos, ~15 min)
-2. Antes de prompts importantes → `np_audit_input`
-3. Opcional: tras respuesta → `np_verify_response`
+1. Instalar MCP + skill (te guiamos, ~15 min) — ver [beta-onboarding-tester.md](beta-onboarding-tester.md)
+2. **Antes** de prompts importantes → `np_audit_input` (una pasada)
+3. **Después** de respuestas con afirmaciones técnicas → `np_verify_response` (una pasada)
 4. Una call de feedback de 20 min al final
 
 ## Qué recibes
@@ -21,17 +21,18 @@
 
 ## Feedback que necesitamos
 
-1. ¿Entendiste el informe sin ser técnico?
+1. ¿Entendiste los informes (antes y después) sin ser técnico?
 2. ¿Te ahorró al menos una iteración inútil?
-3. ¿Pagarías por esto? ¿Cuánto? (rango)
-4. ¿Qué feature falta?
+3. ¿Verify te ayudó a detectar respuestas dudosas?
+4. ¿Pagarías por esto? ¿Cuánto? (rango)
+5. ¿Qué feature falta?
 
 ## Reportar issues
 
 Abre issue en GitHub con:
 
-- `prompt` (redactado)
-- output de `np_audit_input` (JSON)
+- `prompt` (redactado) + output de `np_audit_input` si aplica
+- `respuesta` (redactada) + output de `np_verify_response` si aplica
 - qué esperabas vs qué obtuviste
 
 ## KPIs internos (no compartir con testers)

@@ -4,12 +4,18 @@ Mismo MCP stdio que Cursor. Solo cambia el archivo de config.
 
 ## 1. Instalar MCP
 
+Requisito: [uv](https://docs.astral.sh/uv/).
+
 ```bash
-cd /path/to/home-hub/projects/p-np/np-auditor/mcp-server
-pip install -e .
+git clone https://github.com/jorgeahmed/np-auditor.git ~/Projects/np-auditor
+~/Projects/np-auditor/scripts/install-mcp.sh
 ```
 
-Verifica: `which np-auditor-mcp`
+Verifica:
+
+```bash
+~/Projects/np-auditor/mcp-server/.venv/bin/python -c "import np_auditor_mcp; print('ok')"
+```
 
 ## 2. Claude Desktop
 
@@ -19,7 +25,7 @@ Edita `~/Library/Application Support/Claude/claude_desktop_config.json`:
 {
   "mcpServers": {
     "np-auditor": {
-      "command": "np-auditor-mcp",
+      "command": "/Users/TU/Projects/np-auditor/mcp-server/.venv/bin/np-auditor-mcp",
       "env": {
         "HOME_HUB_ROOT": "/Users/TU/home-hub",
         "NP_BRAIN_HOME": "/Users/TU/home-hub/storage/pnp/local/p-np"
@@ -41,7 +47,7 @@ En el proyecto o `~/.claude/settings.json`:
 {
   "mcpServers": {
     "np-auditor": {
-      "command": "np-auditor-mcp",
+      "command": "/Users/TU/Projects/np-auditor/mcp-server/.venv/bin/np-auditor-mcp",
       "env": {
         "HOME_HUB_ROOT": "/Users/TU/home-hub",
         "NP_BRAIN_HOME": "/Users/TU/home-hub/storage/pnp/local/p-np"

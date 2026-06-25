@@ -1,7 +1,7 @@
 {
   "mcpServers": {
     "np-auditor": {
-      "command": "np-auditor-mcp",
+      "command": "/path/to/np-auditor/mcp-server/.venv/bin/np-auditor-mcp",
       "args": [],
       "env": {
         "HOME_HUB_ROOT": "/path/to/home-hub",
