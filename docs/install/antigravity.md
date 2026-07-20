@@ -50,7 +50,7 @@ Testers sin motor local instalan el MCP igual (`install-mcp.sh`) y usan:
 ```json
 {
   "env": {
-    "NP_AUDITOR_API_URL": "https://tu-tunel.trycloudflare.com",
+    "NP_AUDITOR_API_URL": "https://api.jorgelaveaga.com",
     "NP_AUDITOR_API_KEY": "beta-key-1"
   }
 }

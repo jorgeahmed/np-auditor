@@ -68,7 +68,7 @@ En `~/.cursor/mcp.json`:
     "np-auditor": {
       "command": "/Users/TU/Projects/np-auditor/mcp-server/.venv/bin/np-auditor-mcp",
       "env": {
-        "NP_AUDITOR_API_URL": "https://tu-tunel.trycloudflare.com",
+        "NP_AUDITOR_API_URL": "https://api.jorgelaveaga.com",
         "NP_AUDITOR_API_KEY": "beta-key-1"
       }
     }

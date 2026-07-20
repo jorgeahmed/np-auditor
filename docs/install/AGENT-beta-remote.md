@@ -10,7 +10,7 @@
 
 | Variable | Ejemplo |
 |----------|---------|
-| `NP_AUDITOR_API_URL` | `https://abc123.trycloudflare.com` |
+| `NP_AUDITOR_API_URL` | `https://api.jorgelaveaga.com` |
 | `NP_AUDITOR_API_KEY` | `beta-maría-001` |
 | Plataforma | `cursor` \| `claude_desktop` \| `claude_code` \| `antigravity` |
 | OS | `darwin` \| `linux` |
@@ -91,7 +91,7 @@ Ejemplo final (Cursor):
     "np-auditor": {
       "command": "/Users/juan/Projects/np-auditor/mcp-server/.venv/bin/np-auditor-mcp",
       "env": {
-        "NP_AUDITOR_API_URL": "https://abc123.trycloudflare.com",
+        "NP_AUDITOR_API_URL": "https://api.jorgelaveaga.com",
         "NP_AUDITOR_API_KEY": "beta-maría-001"
       }
     }

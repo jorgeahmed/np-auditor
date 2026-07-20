@@ -19,7 +19,7 @@ Soy beta tester REMOTO (sin motor local). NO uses HOME_HUB_ROOT ni NP_BRAIN_HOME
 
 Mis datos:
 - Plataforma: Claude Desktop (macOS)   ← cambia si usas Claude Code
-- API URL: https://TU-URL.trycloudflare.com
+- API URL: https://api.jorgelaveaga.com
 - API key: beta-TU-NOMBRE-001
 
 Pasos:
@@ -43,7 +43,7 @@ del repo https://github.com/jorgeahmed/np-auditor
 
 Plataforma: Antigravity (Gemini CLI / IDE)
 OS: macOS
-API URL: https://TU-URL.trycloudflare.com
+API URL: https://api.jorgelaveaga.com
 API key: beta-TU-NOMBRE-001
 
 No tengo motor NP. Solo API remota.
@@ -62,7 +62,7 @@ Guía: docs/install/AGENT-beta-remote.md
 Manifiesto: docs/install/agent-install-manifest.json
 
 Plataforma: Cursor
-API URL: https://TU-URL.trycloudflare.com
+API URL: https://api.jorgelaveaga.com
 API key: beta-TU-NOMBRE-001
 
 Usa install-mcp.sh (uv, no pip). Config en ~/.cursor/mcp.json con plantilla config/examples/beta-remote-cursor.json.

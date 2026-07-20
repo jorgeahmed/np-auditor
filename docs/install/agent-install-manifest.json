@@ -8,7 +8,7 @@
     {
       "key": "NP_AUDITOR_API_URL",
       "description": "URL HTTPS del operador (Cloudflare tunnel)",
-      "example": "https://example.trycloudflare.com"
+      "example": "https://api.jorgelaveaga.com"
     },
     {
       "key": "NP_AUDITOR_API_KEY",
