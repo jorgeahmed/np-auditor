@@ -8,6 +8,9 @@ import subprocess
 import urllib.error
 import urllib.request
 from pathlib import Path
+from urllib.parse import urlparse
+
+ESQUEMAS_API_PERMITIDOS = {"https"}
 
 
 def _bridge_script() -> Path:
@@ -28,14 +31,14 @@ def _api_key() -> str:
     return os.environ.get("NP_AUDITOR_API_KEY", "").strip()
 
 
-def _run_bridge(args: list[str]) -> dict:
+def _run_bridge(args: list[str], timeout: float = 120) -> dict:
     script = _bridge_script()
     env = os.environ.copy()
     proc = subprocess.run(
         ["bash", str(script), *args],
         capture_output=True,
         text=True,
-        timeout=120,
+        timeout=timeout,
         env=env,
         cwd=os.environ.get("HOME_HUB_ROOT", "."),
     )
@@ -49,6 +52,9 @@ def _run_bridge(args: list[str]) -> dict:
 
 def _run_api(path: str, body: dict) -> dict:
     url = f"{_api_url()}{path}"
+    esquema = urlparse(url).scheme
+    if esquema not in ESQUEMAS_API_PERMITIDOS:
+        raise RuntimeError(f"NP_AUDITOR_API_URL: esquema no permitido {esquema!r} (se requiere https)")
     data = json.dumps(body, ensure_ascii=False).encode("utf-8")
     req = urllib.request.Request(url, data=data, method="POST")
     req.add_header("Content-Type", "application/json; charset=utf-8")
@@ -64,7 +70,7 @@ def _run_api(path: str, body: dict) -> dict:
 
 
 def run_command(cmd: str, prompt: str = "", *, domain: str = "general", payload: dict | None = None) -> dict:
-    """cmd: audit | coverage | risks | verify | suggest"""
+    """cmd: audit | coverage | risks | verify | suggest | select-model | auditcode"""
     if _api_url():
         routes = {
             "audit": ("/v1/audit", {"prompt": prompt}),
@@ -72,6 +78,8 @@ def run_command(cmd: str, prompt: str = "", *, domain: str = "general", payload:
             "risks": ("/v1/risks", {"prompt": prompt, "domain": domain}),
             "suggest": ("/v1/suggest", {"prompt": prompt}),
             "verify": ("/v1/verify", payload or {}),
+            "select-model": ("/v1/select-model", {"prompt": prompt}),
+            "auditcode": ("/v1/auditcode", {"url": prompt}),
         }
         if cmd not in routes:
             raise RuntimeError(f"comando desconocido: {cmd}")
@@ -89,4 +97,8 @@ def run_command(cmd: str, prompt: str = "", *, domain: str = "general", payload:
         return _run_bridge(["suggest", prompt])
     if cmd == "verify":
         return _run_bridge(["verify", json.dumps(payload or {}, ensure_ascii=False)])
+    if cmd in ("select-model", "select_model"):
+        return _run_bridge(["select-model", prompt])
+    if cmd == "auditcode":
+        return _run_bridge(["auditcode", prompt], timeout=240)
     raise RuntimeError(f"comando desconocido: {cmd}")

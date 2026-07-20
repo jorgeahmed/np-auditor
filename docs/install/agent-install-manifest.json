@@ -113,7 +113,9 @@
     "np_coverage",
     "np_verify_response",
     "np_agent_risks",
-    "np_suggest_prompt"
+    "np_select_model",
+    "np_suggest_prompt",
+    "np_audit_code"
   ],
   "usage_rules_for_agent": [
     "Dos fases: ANTES np_audit_input · DESPUÉS np_verify_response",

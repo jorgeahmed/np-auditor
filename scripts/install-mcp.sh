@@ -18,7 +18,7 @@ if ! command -v uv >/dev/null 2>&1; then
 fi
 
 cd "${MCP}"
-uv venv .venv
+uv venv .venv --allow-existing
 uv pip install -e .
 
 BIN="${MCP}/.venv/bin/np-auditor-mcp"

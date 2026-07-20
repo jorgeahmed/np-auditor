@@ -25,21 +25,31 @@ Ajustas y ejecutas             Decides si confías
 
 ---
 
-## Qué hace (5 tools)
+## Qué hace (7 tools)
 
 | Tool | Cuándo | En criollo |
 |------|--------|------------|
 | `np_audit_input` | **Antes** del prompt | ¿Está claro? ¿Riesgo de dar vueltas? |
 | `np_coverage` | **Antes** (opcional) | ¿Qué temas cubre tu prompt? |
-| `np_agent_risks` | **Antes** (pagos/prod) | Checklist de riesgos visibles |
+| `np_agent_risks` | **Antes** (pagos/prod) | Checklist de riesgos visibles del agente |
+| `np_select_model` | **Antes** (opcional) | Elige modelo (Ollama local / NVIDIA NIM) |
 | `np_suggest_prompt` | **Antes** (opcional) | Versión mejorada para **copiar** |
 | `np_verify_response` | **Después** de la respuesta | ¿Contradicciones / alucinación medible? |
+| `np_audit_code` | **Sobre un repo** (no un prompt) | ¿El código que se va a entregar tiene vulnerabilidades, secretos, dependencias rotas o infraestructura mal configurada? |
+
+`np_audit_code` es distinto a los otros 6: no audita un prompt/respuesta de
+agente, audita el **código fuente de un repositorio externo**. Clona el repo
+(solo `https://`), lo escanea contra el banco de firmas SAST (341 firmas,
+Python/JS/PHP, CWE), un detector de secretos hardcodeados, SCA de
+dependencias contra OSV.dev en vivo, y reglas de misconfiguración de
+Terraform/Kubernetes -- y borra el clon. Nunca ejecuta código del
+repositorio.
 
 ---
 
 ## Verify (después de respuestas) — qué esperar
 
-`np_verify_response` contrasta afirmaciones de la IA con el organismo (~502 dims entrenadas).
+`np_verify_response` contrasta afirmaciones de la IA con el organismo (~20 000 dims entrenadas).
 
 | Resultado | Significado |
 |-----------|-------------|

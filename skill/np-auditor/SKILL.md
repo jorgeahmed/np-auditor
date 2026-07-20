@@ -12,22 +12,25 @@ Backend: **API remota** (`NP_AUDITOR_API_URL` + `NP_AUDITOR_API_KEY`) o bridge l
 
 Instalación: `docs/install/AGENT-beta-remote.md`
 
-## Dos fases
+## Tres fases
 
 | Fase | Tool | Cuándo |
 |------|------|--------|
 | **ANTES** | `np_audit_input` | Prompt caro, vago o riesgoso |
 | **DESPUÉS** | `np_verify_response` | IA ya respondió con claims técnicos |
+| **CÓDIGO** | `np_audit_code` | Hay un repo (propio o de un tercero) que auditar, no un prompt |
 
-## Tools MCP (5)
+## Tools MCP (7)
 
 | Tool | Fase |
 |------|------|
 | `np_audit_input` | Antes |
 | `np_coverage` | Antes (opcional) |
 | `np_agent_risks` | Antes (pagos/prod) |
+| `np_select_model` | Antes — elegir LLM (Ollama/NVIDIA) |
 | `np_suggest_prompt` | Antes — **solo copiar**, no ejecutar |
 | `np_verify_response` | **Después** |
+| `np_audit_code` | **Código** — SAST + secretos + SCA + IaC sobre un repo `https://` |
 
 ## Verify — presentar al usuario
 

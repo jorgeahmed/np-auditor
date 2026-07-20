@@ -1,61 +1,61 @@
 {
-  "version": 502,
+  "version": 20338,
   "schema": 1,
-  "generado_utc": "2026-06-25T19:53:41Z",
+  "generado_utc": "2026-06-27T04:53:35Z",
   "nota": "Subset público verificable — sin código de sensores (R1)",
   "producto": "np-auditor",
-  "organismo_dims": 502,
+  "organismo_dims": 20338,
   "dominios_resumen": {
     "matematicas": {
-      "dims": 52,
+      "dims": 1718,
       "categoria": "Cálculo, álgebra, series"
     },
     "lenguaje": {
-      "dims": 46,
+      "dims": 1653,
       "categoria": "Corpus y embeddings"
     },
     "computacion": {
-      "dims": 62,
+      "dims": 1629,
       "categoria": "CS, systems, ML"
     },
     "comunicacion": {
-      "dims": 17,
+      "dims": 1191,
       "categoria": "Redes, canal y compresión"
     },
     "transferencia": {
-      "dims": 46,
+      "dims": 1716,
       "categoria": "Puentes entre dominios"
     },
     "economia": {
-      "dims": 17,
+      "dims": 1281,
       "categoria": "Micro, macro y econometría"
     },
     "estadistica": {
-      "dims": 26,
+      "dims": 1601,
       "categoria": "Inferencia y modelos"
     },
     "fisica": {
-      "dims": 22,
+      "dims": 1430,
       "categoria": "Mecánica y termodinámica"
     },
     "quimica": {
-      "dims": 22,
+      "dims": 1430,
       "categoria": "Reacciones y orgánica"
     },
     "biologia": {
-      "dims": 22,
+      "dims": 1430,
       "categoria": "Molecular y evolutiva"
     },
     "neurociencia": {
-      "dims": 35,
+      "dims": 1521,
       "categoria": "Sinapsis y sistemas"
     },
     "psicologia": {
-      "dims": 31,
+      "dims": 1520,
       "categoria": "Decisión y sesgos"
     },
     "programacion": {
-      "dims": 104,
+      "dims": 2218,
       "categoria": "PL, agent-risk, ops"
     }
   },

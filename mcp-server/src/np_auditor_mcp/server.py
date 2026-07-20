@@ -11,6 +11,24 @@ from np_auditor_mcp.client import run_command
 
 mcp = FastMCP("np-auditor")
 
+# Tiers acumulativos del plan freemium (ver README / paquetes):
+#   free     → SAST (banco de firmas completo)
+#   pro      → + calidad de código + alucinaciones de IA
+#   team     → + SCA (dependencias vs. OSV.dev)
+#   business → + IaC (Terraform/Kubernetes)
+_NIVEL_TIER = {"free": 0, "pro": 1, "team": 2, "business": 3, "enterprise": 3, "full": 3}
+_UPSELL = "→ disponible en un tier superior: github.com/jorgeahmed/np-auditor#paquetes"
+
+
+def _tier_actual() -> int:
+    """Nivel de acceso: NP_AUDITOR_TIER explícito, o full si hay API key B2B."""
+    tier = os.environ.get("NP_AUDITOR_TIER", "").strip().lower()
+    if tier:
+        return _NIVEL_TIER.get(tier, 0)
+    if os.environ.get("NP_AUDITOR_API_KEY", "").strip():
+        return _NIVEL_TIER["full"]
+    return _NIVEL_TIER["free"]
+
 
 @mcp.tool()
 def np_audit_input(prompt: str, context: str = "general") -> str:
@@ -40,7 +58,7 @@ def np_coverage(prompt: str) -> str:
     """Mapa de cobertura del organismo para un prompt.
 
     Muestra topics detectados, dominios activos, KNOWN/PARTIAL/UNKNOWN
-    y totales del banco (502+ dims). Sin LLM.
+    y totales del banco (1000+ dims). Sin LLM.
     """
     data = run_command("coverage", prompt)
     lines = [
@@ -110,6 +128,112 @@ def np_agent_risks(prompt: str, domain: str = "general") -> str:
         lines.append("  · (ninguno crítico detectado)")
     for r in risks:
         lines.append(f"  · {r}")
+    return "\n".join(lines)
+
+
+@mcp.tool()
+def np_select_model(prompt: str, prefer_nvidia: bool = False) -> str:
+    """Elige el modelo OpenClaw óptimo para un prompt (Ollama local o NVIDIA NIM).
+
+    Sin LLM — reglas sobre estructura del prompt (~instantáneo).
+    Frontier NVIDIA: deepseek-v4-flash/pro, kimi-k2.6, glm-5.1, nemotron-3-super.
+    DeepSeek R1 NO está en NVIDIA NIM; solo local (deepseek-r1:14b).
+    """
+    if prefer_nvidia:
+        os.environ["NP_ROUTER_PREFER_NVIDIA"] = "1"
+    data = run_command("select-model", prompt)
+    return data.get("formatted") or json.dumps(data, ensure_ascii=False)
+
+
+@mcp.tool()
+def np_audit_code(repo_url_o_ruta_local: str) -> str:
+    """Audita código: vulnerabilidades (SAST), secretos hardcodeados,
+    dependencias vulnerables (SCA vs. OSV.dev), infraestructura como código
+    (Terraform/Kubernetes), calidad (complejidad, código muerto,
+    duplicación) y alucinaciones de IA (nombres/imports usados pero nunca
+    definidos -- señal de que un LLM inventó una referencia inexistente).
+
+    Acepta una URL https:// de un repo externo (lo clona a un directorio
+    temporal, escanea y borra el clon) o una ruta local ya existente en
+    disco (la escanea directo). Nunca ejecuta el código auditado. Puede
+    tardar hasta unos minutos en repos grandes (consulta en vivo a OSV.dev).
+    """
+    data = run_command("auditcode", repo_url_o_ruta_local)
+    if data.get("error"):
+        return f"Error: {data['error']}"
+
+    nivel = _tier_actual()
+    lines = [
+        f"── NP Auditor · código — {data.get('repo_url', repo_url_o_ruta_local)} ──",
+        f"Archivos: {data.get('total_archivos_py', 0)} Python · "
+        f"{data.get('total_archivos_php', 0)} PHP · {data.get('total_archivos_js', 0)} JS/TS",
+    ]
+
+    dimensiones = data.get("dimensiones") or []
+    lines.append("")
+    if not dimensiones:
+        lines.append("Código: sin coincidencias con el banco de firmas SAST.")
+    else:
+        lines.append("Vulnerabilidades de código:")
+        for d in dimensiones:
+            lines.append(f"  [{d.get('cwe')}] {d.get('nombre')}: {d.get('conteo')} ocurrencia(s)")
+
+    total_paquetes = data.get("total_paquetes_analizados", 0)
+    dependencias = data.get("dependencias") or []
+    sca_disponible = data.get("sca_disponible", True)
+    lines.append("")
+    if nivel < _NIVEL_TIER["team"]:
+        lines.append(f"SCA (dependencias vs. OSV.dev): {_UPSELL}")
+    elif total_paquetes == 0:
+        lines.append("SCA: sin lockfile para analizar (package-lock.json/requirements.txt/composer.lock)")
+    elif not sca_disponible:
+        lines.append("SCA: no se pudo consultar OSV.dev (sin red/timeout)")
+    elif not dependencias:
+        lines.append(f"SCA: {total_paquetes} paquete(s) analizados, sin vulnerabilidades conocidas")
+    else:
+        lines.append(f"SCA: {len(dependencias)} vulnerabilidad(es) en {total_paquetes} paquete(s) analizados")
+        for dep in dependencias[:6]:
+            cve = f" ({dep.get('cve')})" if dep.get("cve") else ""
+            lines.append(f"  · {dep.get('paquete')}@{dep.get('version')}{cve}: {dep.get('severidad') or '?'}")
+
+    iac = data.get("iac") or []
+    lines.append("")
+    if nivel < _NIVEL_TIER["business"]:
+        lines.append(f"IaC (Terraform/Kubernetes): {_UPSELL}")
+    elif not iac:
+        lines.append("IaC: sin misconfiguraciones (o sin Terraform/Kubernetes en el repo)")
+    else:
+        lines.append(f"IaC: {len(iac)} misconfiguracion(es)")
+        for h in iac[:6]:
+            lines.append(f"  · [{h.get('severidad')}] {h.get('regla')} ({h.get('referencia_cis')}): {h.get('archivo')}:{h.get('linea')}")
+
+    calidad = data.get("calidad") or []
+    lines.append("")
+    if nivel < _NIVEL_TIER["pro"]:
+        lines.append(f"Calidad de código: {_UPSELL}")
+    elif not calidad:
+        lines.append("Calidad: sin archivos Python para analizar")
+    else:
+        bloat_avg = sum(c.get("bloat_score", 0) for c in calidad) / len(calidad)
+        criticos = sorted(
+            (c for c in calidad if c.get("bloat_score", 0) >= 0.5),
+            key=lambda c: c.get("bloat_score", 0), reverse=True,
+        )
+        lines.append(f"Calidad: {len(calidad)} archivo(s) · bloat promedio {bloat_avg:.2f} · {len(criticos)} candidato(s) a refactor")
+        for c in criticos[:5]:
+            lines.append(f"  · {c.get('archivo')}: bloat {c.get('bloat_score')}, complejidad máx {c.get('complejidad_max')}, doc {c.get('documentacion_cobertura_pct')}%")
+
+    alucinaciones = data.get("alucinaciones") or []
+    lines.append("")
+    if nivel < _NIVEL_TIER["pro"]:
+        lines.append(f"Alucinaciones de IA: {_UPSELL}")
+    elif not alucinaciones:
+        lines.append("Alucinaciones de IA: sin nombres indefinidos detectados")
+    else:
+        lines.append(f"Alucinaciones de IA: {len(alucinaciones)} nombre(s)/import(s) indefinidos")
+        for a in alucinaciones[:6]:
+            lines.append(f"  · {a.get('archivo')}:{a.get('linea')} — `{a.get('nombre')}` ({a.get('tipo')})")
+
     return "\n".join(lines)
 
 

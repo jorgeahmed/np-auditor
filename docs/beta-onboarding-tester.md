@@ -110,7 +110,7 @@ Plataformas válidas: `Claude Desktop`, `Claude Code`, `Cursor`, `Antigravity`.
 | Alucinación (medible) | % de error **solo sobre lo comprobable**, no sobre todo el texto |
 | Sin claims medibles | Opiniones o temas fuera de alcance — no es “bien” ni “mal”, simplemente no se pudo medir |
 
-**Importante:** verify **no** fact-checka internet ni cualquier dato del mundo. Contrasta con lo que el organismo (~502 dimensiones) puede medir. No promete cero errores en general.
+**Importante:** verify **no** fact-checka internet ni cualquier dato del mundo. Contrasta con lo que el organismo (~20 000 dimensiones) puede medir. No promete cero errores en general.
 
 #### Otras tools (opcionales)
 
@@ -161,3 +161,7 @@ Gracias por probar la beta.
 ## Ejemplo relleno — Julio Gonzalez
 
 Credenciales en `config/np-auditor-beta-keys.local.txt` (operador).
+
+## Ejemplo relleno — Abraham Chávez (tester #2)
+
+Guía rápida lista para DM: `config/beta-testers/abraham-chavez-guia-rapida.md` (local, no commit).

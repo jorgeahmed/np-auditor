@@ -1,8 +1,8 @@
 {
-  "version": "0.1.502",
-  "published_utc": "2026-06-25T19:53:41Z",
-  "organismo_dims": 502,
-  "agent_risk_dims": 6,
+  "version": "0.1.20338",
+  "published_utc": "2026-06-27T04:53:35Z",
+  "organismo_dims": 20338,
+  "agent_risk_dims": 50,
   "platforms": [
     "cursor",
     "claude",

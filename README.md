@@ -9,7 +9,7 @@ Antes de que tu agente entre en un loop caro o ejecute algo riesgoso, NP Auditor
 
 ## Estado
 
-**Beta cerrada · organismo 502 dims · local o API remota**
+**Beta cerrada · organismo ~20 000 dims · local o API remota**
 
 ## ¿Cómo empiezo?
 
@@ -81,11 +81,32 @@ Copia `skill/np-auditor/` a `.cursor/skills/np-auditor/` en tu proyecto.
 | `np_coverage` | Mapa KNOWN/PARTIAL/UNKNOWN por dominio |
 | `np_verify_response` | Verifica claims / alucinación |
 | `np_agent_risks` | Riesgos payment / prod / general |
+| `np_select_model` | Elige modelo OpenClaw (Ollama local o NVIDIA NIM) |
 | `np_suggest_prompt` | Prompt mejorado para copiar |
+| `np_audit_code` | Audita un repo externo: SAST (341 firmas, CWE), secretos hardcodeados, dependencias vulnerables (SCA vs. OSV.dev) e infraestructura como código (Terraform/Kubernetes) |
+
+## Paquetes
+
+El MCP se descarga gratis y funciona completo en su tier **Free**. Los motores
+adicionales de `np_audit_code` se activan por tier (`NP_AUDITOR_TIER`, o
+automáticamente con API key B2B):
+
+| Tier | `np_audit_code` incluye |
+|------|-------------------------|
+| **Free** (default) | SAST — banco completo de 341 firmas verificadas (CWE) |
+| **Pro** | + calidad de código + alucinaciones de IA |
+| **Team** | + SCA — dependencias vs. OSV.dev en vivo |
+| **Business / Enterprise** | + IaC — Terraform/Kubernetes · API remota · white-label |
+
+Los tiers de pago se activan con el operador — contacto abajo. Las demás 6
+tools (prompt, cobertura, riesgos, verificación, modelo, sugerencia) están
+disponibles en todos los tiers.
 
 ## Beta remota (API)
 
 Sin motor local: [docs/api-beta.md](docs/api-beta.md) — `NP_AUDITOR_API_URL` + API key.
+La auditoría completa de código vía API (`/v1/auditcode`) está limitada por plan
+del tenant — hoy, un solo cliente B2B tiene acceso al sistema completo.
 
 ## Manifest
 

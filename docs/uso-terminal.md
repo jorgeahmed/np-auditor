@@ -118,4 +118,4 @@ Los hooks **no** auditan solos; te recuerdan usar la terminal.
 Terminal (audit) → tú copias → Composer (ejecutar) → (opcional) verify una vez
 ```
 
-Ver también: [modelo-uso.md](modelo-uso.md) · [entrenamiento-prompts.md](entrenamiento-prompts.md)
+Ver también: [entrenamiento-prompts.md](entrenamiento-prompts.md)
